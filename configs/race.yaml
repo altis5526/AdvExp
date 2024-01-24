@@ -1,0 +1,30 @@
+device:
+  num_workers: 8
+  pin_memory: True
+
+train:
+  pattern_name: "cardiomegaly"
+  step_size: 1e-5
+  opt_lr: 1e-6
+  opt_spurious_lr: 1e-5
+  opt_target_lr: 1e-6
+  weight_decay: 1e-5
+  MI_para: 10
+  target_para: 1
+  spurious_para: 10
+  rev_para: 0.1
+  epochs: 100
+  batch_size: 32
+  save_interval: 1
+  target_classes: 1
+  train_path: "../CheXpert-v1.0-small/half_shuffle_train.csv"
+  test_path: "../CheXpert-v1.0-small/half_shuffle_val.csv"
+
+meta:
+  pretrain_mask_weight: "args["meta"]["pretrain_mask_weight"]"
+  pretrain_spurious_weight: "args['meta']["pretrain_spurious_weight"]"
+  weight_dir: "args["meta"]["save_weight_path"]"
+  saveAllimage: False
+  masked_img_dir: "args["meta"]["save_image_path"]"
+  spurious_type: "race"
+  testing_epoch: 10
