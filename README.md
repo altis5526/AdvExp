@@ -8,6 +8,6 @@ To avoid deep learning models utilizing shortcuts in a training dataset, many de
 Pending...
 ## Dataset
 ### BiasCheXpert
-BiasCheXpert is a dataset subsampled from CheXpert-v1.0, a public dataset containing chest radiographs of 65240 patients, to artificially enhance bias in our experiments. The original dataset of CheXpert can be downloaded on [Website](https://stanfordaimi.azurewebsites.net/datasets/8cbd9ed4-2eb9-4565-affc-111cf4f7ebe2). In our original experiment, we actually used the downsampled CheXpert version officially released by STANFORD ML GROUP, but the link was not publicily released. We provided the BiasCheXpert csv files in our repo which marks the radiographs subsampled from CheXpert.
+BiasCheXpert is a dataset subsampled from CheXpert-v1.0, a public dataset containing chest radiographs of 65240 patients, to artificially enhance bias in our experiments. The original dataset of CheXpert can be downloaded on [Website](https://stanfordaimi.azurewebsites.net/datasets/8cbd9ed4-2eb9-4565-affc-111cf4f7ebe2). In our original experiment, we actually used the downsampled CheXpert version officially released by STANFORD ML GROUP, but the link was not publicily released. We provided the csv files in our repo which helps you to create BiasCheXpert from CheXpert.
 ## Usage
 Under building...
