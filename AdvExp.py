@@ -168,17 +168,17 @@ def train(args):
             "target_correct: ", validation_result['target_correct'],
             "test_auc: ", validation_result['test_auc'],
             "running_test_loss_spurious: ", validation_result['running_test_loss_spurious'],
-            "running_test_loss_target: ", validation_result['running_test_loss_target'],
-            "running_test_loss_MI: ", validation_result['running_test_loss_MI'],
-            "PQD: ", validation_result['PQD'],
-            "DP: ", validation_result['DP'],
-            "EOM:", validation_result['EOM'],
-            "male/black_P_acc:" validation_result['male_P_acc'],
-            "male/black_N_acc:" validation_result['male_N_acc'],
-            "female/white_P_acc:" validation_result['female_P_acc'],
-            "female/white_N_acc:" validation_result['female_N_acc'],
-            "worst_G_acc:" validation_result['worst_G_acc'],
-        )
+            "running_test_loss_target: ", validation_result['running_test_loss_target'], 
+            "running_test_loss_MI: ", validation_result['running_test_loss_MI'], 
+            "PQD: ", validation_result['PQD'], 
+            "DP: ", validation_result['DP'], 
+            "EOM:", validation_result['EOM'], 
+            "male/black_P_acc:", validation_result['male_P_acc'], 
+            "male/black_N_acc:", validation_result['male_N_acc'], 
+            "female/white_P_acc:", validation_result['female_P_acc'], 
+            "female/white_N_acc:", validation_result['female_N_acc'], 
+            "worst_G_acc:", validation_result['worst_G_acc']
+            )
 
         test_auc = validation_result['test_auc']
         
@@ -202,7 +202,8 @@ def val(args):
     torch.manual_seed(0)
     torch.cuda.manual_seed(0)
     np.random.seed(0)
-    
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     num_workers = args["device"]["num_workers"]
     pin_memory = args["device"]["pin_memory"]
     pattern_name = args["train"]["pattern_name"]
@@ -215,6 +216,9 @@ def val(args):
     save_image = args["meta"]["saveAllimage"]
     masked_img_dir = args["meta"]["save_image_path"]
     spurious_type = args["meta"]["exp_type"]
+    MI_para = args["train"]["MI_para"]
+    target_para = args["train"]["target_para"]
+    spurious_para = args["train"]["spurious_para"]
 
     pattern_index_dict = {
         'cardiomegaly': 2,
@@ -241,7 +245,7 @@ def val(args):
     criterion = nn.CrossEntropyLoss()
     BCE = nn.BCELoss(reduction="none")
 
-    testing_result = validate_fun(Autoencoder, spurious_classify, test_loader, save_image, 0, criterion, BCE, pattern_index, masked_img_dir, spurious_type)
+    testing_result = validate_fun(Autoencoder, spurious_classify, test_loader, save_image, 0, criterion, BCE, pattern_index, masked_img_dir, spurious_type, MI_para, target_para, spurious_para)
     
     print(
         "spurious_correct: ", testing_result['spurious_correct'],
@@ -253,19 +257,20 @@ def val(args):
         "PQD: ", testing_result['PQD'],
         "DP: ", testing_result['DP'],
         "EOM:", testing_result['EOM'],
-        "male/black_P_acc:" testing_result['male_P_acc'],
-        "male/black_N_acc:" testing_result['male_N_acc'],
-        "female/white_P_acc:" testing_result['female_P_acc'],
-        "female/white_N_acc:" testing_result['female_N_acc'],
-        "worst_G_acc:" testing_result['worst_G_acc'],
+        "male/black_P_acc:", testing_result['male_P_acc'],
+        "male/black_N_acc:", testing_result['male_N_acc'],
+        "female/white_P_acc:", testing_result['female_P_acc'],
+        "female/white_N_acc:", testing_result['female_N_acc'],
+        "worst_G_acc:", testing_result['worst_G_acc'],
     )
     print('Finished Validating')
 
 
-def validate_fun(Autoencoder, spurious_classify, test_loader, saveallImage, epoch, criterion, BCE, pattern_index, masked_img_dir, spurious_type):
+def validate_fun(Autoencoder, spurious_classify, test_loader, saveallImage, epoch, criterion, BCE, pattern_index, masked_img_dir, spurious_type, spurious_para, target_para, MI_para):
     print('Start validating')
     Autoencoder.eval()
     spurious_classify.eval()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     with torch.no_grad():
         total = 0
         correct = 0
