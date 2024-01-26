@@ -228,7 +228,6 @@ def val(args):
     print(f'pretrain_spurious_weight: {pretrain_spurious_weight}')
 
     print(f'target_classes: {target_classes}')
-    print(f'train_path: {train_path}')
     print(f'test_path: {test_path}')
 
     print(f'pattern_index: {pattern_index}')
@@ -242,7 +241,7 @@ def val(args):
     criterion = nn.CrossEntropyLoss()
     BCE = nn.BCELoss(reduction="none")
 
-    testing_result = validate_fun(Autoencoder, spurious_classify, test_loader, save_image, epoch, criterion, BCE, pattern_index, masked_img_dir, spurious_type)
+    testing_result = validate_fun(Autoencoder, spurious_classify, test_loader, save_image, 0, criterion, BCE, pattern_index, masked_img_dir, spurious_type)
     
     print(
         "spurious_correct: ", testing_result['spurious_correct'],
