@@ -173,12 +173,14 @@ def train(args):
             "PQD: ", validation_result['PQD'],
             "DP: ", validation_result['DP'],
             "EOM:", validation_result['EOM'],
-            "male/black_P_acc:" metrics_result['male_P_acc'],
-            "male/black_N_acc:" metrics_result['male_N_acc'],
-            "female/white_P_acc:" metrics_result['female_P_acc'],
-            "female/white_N_acc:" metrics_result['female_N_acc'],
-            "worst_G_acc:" metrics_result['worst_G_acc'],
+            "male/black_P_acc:" validation_result['male_P_acc'],
+            "male/black_N_acc:" validation_result['male_N_acc'],
+            "female/white_P_acc:" validation_result['female_P_acc'],
+            "female/white_N_acc:" validation_result['female_N_acc'],
+            "worst_G_acc:" validation_result['worst_G_acc'],
         )
+
+        test_auc = validation_result['test_auc']
         
         if epoch % save_interval == save_interval - 1 or test_auc > torch.max(auc_save_list):
             torch.save({
@@ -252,11 +254,11 @@ def val(args):
         "PQD: ", testing_result['PQD'],
         "DP: ", testing_result['DP'],
         "EOM:", testing_result['EOM'],
-        "male/black_P_acc:" metrics_result['male_P_acc'],
-        "male/black_N_acc:" metrics_result['male_N_acc'],
-        "female/white_P_acc:" metrics_result['female_P_acc'],
-        "female/white_N_acc:" metrics_result['female_N_acc'],
-        "worst_G_acc:" metrics_result['worst_G_acc'],
+        "male/black_P_acc:" testing_result['male_P_acc'],
+        "male/black_N_acc:" testing_result['male_N_acc'],
+        "female/white_P_acc:" testing_result['female_P_acc'],
+        "female/white_N_acc:" testing_result['female_N_acc'],
+        "worst_G_acc:" testing_result['worst_G_acc'],
     )
     print('Finished Validating')
 
