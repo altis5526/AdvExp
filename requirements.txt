@@ -1,0 +1,9 @@
+PyYAML
+torch
+torchvision
+torchaudio
+pandas
+opencv-python
+scikit-learn
+torchmetrics
+matplotlib

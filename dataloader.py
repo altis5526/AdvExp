@@ -26,7 +26,6 @@ class Chexpert(Dataset):
     
     def __getitem__(self, idx):
         img_dir = self.rows[idx][0]
-        img_dir = "../" + img_dir
         idx_num = idx
         full_img = Image.open(img_dir).convert('RGB')
         full_img = full_img.resize((256,256))
@@ -64,11 +63,10 @@ class Chexpert(Dataset):
         diagnosis = [float(i) for i in diagnosis_vec]
         diagnosis = torch.tensor([diagnosis]).float()
         diagnosis = torch.squeeze(diagnosis, 0)
-        # diagnosis_label = diagnosis.nonzero()
-        # diagnosis_label = torch.squeeze(diagnosis_label, 1)
        
-        patient_num = img_dir.split('/')[3]
-        view = img_dir.split('/')[5]
+       
+        patient_num = img_dir.split('/')[2]
+        view = img_dir.split('/')[4]
         gender_pattern = torch.zeros(4)
         if self.rows[idx][1] == 'Male' and self.rows[idx][21] == '1':
             gender_pattern[0] = 1.
@@ -78,10 +76,7 @@ class Chexpert(Dataset):
             gender_pattern[2] = 1.
         elif self.rows[idx][1] == 'Female' and self.rows[idx][21] == '0':
             gender_pattern[3] = 1.
-        # diag_label = []
-        # for idx, diag in enumerate(diagnosis):
-        #     if diag == 1:
-        #         diag_label.append(self.title[idx + 5])
+        
         output = {'full_img': full_img, 'gender': gender, 'age': age, 
                 'AP/PA': AP_PA, 'race': race, 'diagnosis': diagnosis,
                 'patient_num': patient_num, 'gender_pattern': gender_pattern, 'idx_num': idx_num, 'img_dir': img_dir,

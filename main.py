@@ -7,7 +7,7 @@ from AdvExp import train
 def load_params(fname):
     with open(fname, 'r') as y_file:
         params = yaml.load(y_file, Loader=yaml.FullLoader)
-        logger.info('loaded params...')
+        print('loaded params...')
         pp = pprint.PrettyPrinter(indent=4)
         pp.pprint(params)
 

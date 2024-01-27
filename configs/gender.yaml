@@ -4,11 +4,11 @@ device:
 
 train:
   pattern_name: "cardiomegaly"
-  step_size: 1e-5
-  opt_lr: 1e-6
-  opt_spurious_lr: 1e-5
-  opt_target_lr: 1e-6
-  weight_decay: 1e-5
+  step_size: 0.00001
+  opt_lr: 0.000001
+  opt_spurious_lr: 0.00001
+  opt_target_lr: 0.000001
+  weight_decay: 0.00001
   MI_para: 1
   target_para: 1
   spurious_para: 10
@@ -17,14 +17,14 @@ train:
   batch_size: 32
   save_interval: 1
   target_classes: 1
-  train_path: "../CheXpert-v1.0-small/half_0.99biased_training_based_on_Cardiomegaly.csv"
-  test_path: "../CheXpert-v1.0-small/half_shuffle_val.csv"
+  train_path: "../CheXpert-v1.0-small/Gender_Cardiomegaly_2.csv"
+  test_path: "../CheXpert-v1.0-small/Gender_Cardiomegaly_2.csv"
 
 meta:
   pretrain_mask_weight: "args["meta"]["pretrain_mask_weight"]"
   pretrain_spurious_weight: "args['meta']["pretrain_spurious_weight"]"
-  weight_dir: "args["meta"]["save_weight_path"]"
+  weight_dir: "weight"
   saveAllimage: False
-  masked_img_dir: "args["meta"]["save_image_path"]"
+  masked_img_dir: "save_image"
   spurious_type: "gender"
   testing_epoch: 10

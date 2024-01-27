@@ -14,7 +14,6 @@ from torchmetrics import HammingDistance
 from PIL import Image
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
 from utils import fairness_metrics, saveImage
 from groupDRO import compute_group_avg, compute_robust_loss
 
@@ -30,10 +29,10 @@ def train(args):
 
     # Hyperparameters
     pattern_name = args["train"]["pattern_name"]
-    step_size = args["train"]["DRO_stepsize"]
-    opt_lr = args["train"]["lr_autoencoder"]
-    opt_spurious_lr = args["train"]["lr_spurious"]
-    opt_target_lr = args["train"]["lr_target"]
+    step_size = args["train"]["step_size"]
+    opt_lr = args["train"]["opt_lr"]
+    opt_spurious_lr = args["train"]["opt_spurious_lr"]
+    opt_target_lr = args["train"]["opt_target_lr"]
     weight_decay = args["train"]["weight_decay"]
     MI_para = args["train"]["MI_para"]
     target_para = args["train"]["target_para"]
@@ -43,11 +42,11 @@ def train(args):
     batch_size = args["train"]["batch_size"]
     save_interval = args["train"]["save_interval"]
     target_classes = args["train"]["target_classes"]
-    train_path = args["train"]["train_data_path"]
-    test_path = args["train"]["test_data_path"]
+    train_path = args["train"]["train_path"]
+    test_path = args["train"]["test_path"]
 
     # Training metadata
-    weight_dir = args["meta"]["save_weight_path"]
+    weight_dir = args["meta"]["weight_dir"]
     if not os.path.exists(weight_dir):
         os.makedirs(weight_dir)
     save_image = args["meta"]["saveAllimage"]
@@ -55,7 +54,7 @@ def train(args):
         masked_img_dir = args["meta"]["save_image_path"]
         if not os.path.exists(masked_img_dir):
             os.makedirs(masked_img_dir)
-    spurious_type = args["meta"]["exp_type"]
+    spurious_type = args["meta"]["spurious_type"]
     
     pattern_index_dict = {
         'cardiomegaly': 2,
@@ -90,8 +89,6 @@ def train(args):
         running_loss_spurious = 0.0
         running_loss_target = 0.0
         running_loss_MI = 0.0
-        running_bias_align_loss = 0.0
-        running_bias_conflicting_loss = 0.0
         
         start_time = time.time()
         for i, data in enumerate(train_loader, 0):
